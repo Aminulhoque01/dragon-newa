@@ -1,12 +1,19 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
+import { ToastHeader } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
-import { useNavigate } from 'react-router-dom';
+import toast from 'react-hot-toast';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../context/AuthProvider/AuthProvider';
 
 const Login = () => {
     const {login}= useContext(AuthContext);
     const navigate= useNavigate();
+    const[error, setError]= useState('')
+
+    const location=useLocation();
+
+    const from = location.state?.from?.pathname ||'/';
 
     const handlerLoginBtn=(event)=>{
         event.preventDefault();
@@ -18,10 +25,18 @@ const Login = () => {
             const user= result.user;
             console.log(user);
             form.reset();
-            navigate('/')
+            setError('');
+            
+            if(user.emailVerified){
+                navigate(from,{replace:true});
+            }else{
+                toast.error('your email no emailVerified.please verify now')
+            }
+            
         })
         .catch(error=>{
-            console.log(error);
+            console.error(error);
+            setError(error.message);
         })
        
     }
@@ -41,8 +56,11 @@ const Login = () => {
             </Form.Group>
             
             <Button variant="primary" type="submit">
-            Submit
+                LOGIN
             </Button>
+            <Form.Text className='text-danger'>
+                {error}
+            </Form.Text>
         </Form>
     );
 };

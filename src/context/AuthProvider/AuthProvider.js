@@ -1,46 +1,66 @@
 import React, { createContext, useEffect, useState } from 'react';
-import {createUserWithEmailAndPassword, getAuth, onAuthStateChanged, signInWithEmailAndPassword, signInWithPopup, signOut}from 'firebase/auth'
-
+import {createUserWithEmailAndPassword, getAuth, onAuthStateChanged, sendEmailVerification, signInWithEmailAndPassword, signInWithPopup, signOut, updateProfile} from 'firebase/auth'
 import app from '../../firebase/firebase.config';
 
-
 export const AuthContext= createContext();
-
 const auth= getAuth(app)
 
 const AuthProvider = ({children}) => {
-    const [user, setUser]= useState(null)
-    
 
-    const providerLogin=(Provider)=>{
-        signInWithPopup(auth, Provider);
+    const [user, setUser]= useState(null);
+    const[loading, setLoading]= useState(false)
+
+    const googleProviderLogin=(provider)=>{
+        return signInWithPopup(auth,provider);
+    }
+
+    const register =(email,password)=>{
+        setLoading(true)
+        return createUserWithEmailAndPassword(auth,email,password);
+    }
+    const login=(email,password)=>{
+        setLoading(true)
+        return signInWithEmailAndPassword(auth,email,password, )
+    }
+    
+    const updateUserProfile=(profile)=>{
+            return updateProfile(auth.currentUser, profile);
     }
 
     const logOut=()=>{
-        signOut(auth);
+        setLoading(true)
+        return signOut(auth);
     }
 
-    const register=(email,password)=>{
-       return createUserWithEmailAndPassword(auth,email,password)
-    }
-
-    const login=(email,password)=>{
-        return signInWithEmailAndPassword(auth,email,password)
+    const verifyUser=()=>{
+        return sendEmailVerification(auth.currentUser);
     }
 
     useEffect(()=>{
-        const unSubscribe = onAuthStateChanged(auth, (currentUser)=>{
-            console.log(currentUser);
-            setUser(currentUser);
-        })
+        const unSubscribe= onAuthStateChanged(auth, (currentUser)=>{
+            
 
-        return()=>{
+            if(currentUser === null || currentUser.emailVerified){
+                setUser(currentUser);
+            }
+            setLoading(false);
+        })
+        return ()=>{
             unSubscribe();
         }
     },[])
 
+    const authInfo= {
+        user,
+         register,
+         login,
+         logOut,
+         googleProviderLogin, 
+         loading,
+         updateUserProfile,
+         verifyUser,
 
-    const authInfo= {user,providerLogin,logOut, register, login};
+        };
 
     return (
         <div>

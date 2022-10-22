@@ -15,6 +15,7 @@ const Header = () => {
     const {user, logOut}= useContext(AuthContext);
     
     const handlerLogout =()=>{
+        
         logOut()
         .then(result=>{
             const user=result.user;
@@ -50,7 +51,7 @@ const Header = () => {
                         <Nav.Link eventKey={2} href="#memes">
                             Dank memes
                         </Nav.Link>
-                        <Nav.Link href="#deets">
+                        <>
                             {
                                 user?
                                 <>
@@ -66,19 +67,19 @@ const Header = () => {
                                 </>
                             }
                             
-                            </Nav.Link>
-                        <Nav.Link href="#deets">
+                        </>
+                        <Link to="/profile">
                             {
-                            user?
+                            user?.photoURL ?
                             <Image 
                             style={{height:'30px'}} 
                             roundedCircle 
-                            src={user.photoURL}>
+                            src={user?.photoURL}>
 
                             </Image>
                             :<FaUser></FaUser>
                             }
-                        </Nav.Link>
+                        </Link>
                     </Nav>
                     <div className='d-lg-none'>
                         <LeftSideNav></LeftSideNav>

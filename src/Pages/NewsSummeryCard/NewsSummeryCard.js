@@ -34,9 +34,9 @@ const NewsSummeryCard = ({ news }) => {
                 <Card.Text>
                     {
                         details.length > 250 ?
-                        <p>{details.slice(0,250)+'...'}<Link to={`/news/${_id}`}>Read more</Link></p>
+                        <span>{details.slice(0,250)+'...'}<Link to={`/news/${_id}`}>Read more</Link></span>
                         :
-                        <p>{details}</p>
+                        <span>{details}</span>
                     }
                 </Card.Text>
                 

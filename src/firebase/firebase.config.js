@@ -5,12 +5,20 @@ import { initializeApp } from "firebase/app";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
+  // apiKey: process.env.REACT_APP_apiKey,
+  // authDomain: process.env.REACT_APP_authDomain,
+  // projectId: process.env.REACT_APP_projectId,
+  // storageBucket: process.env.REACT_APP_storageBucket,
+  // messagingSenderId: process.env.REACT_APP_messagingSenderId,
+  // appId: process.env.REACT_APP_appId,
+
   apiKey: "AIzaSyASuUGwRkehuRcXyaonuMxfy9osT6u2ttg",
   authDomain: "daragon-news.firebaseapp.com",
   projectId: "daragon-news",
   storageBucket: "daragon-news.appspot.com",
   messagingSenderId: "196033198048",
-  appId: "1:196033198048:web:dc703fb50367d8b6cb5d85"
+  appId: "1:196033198048:web:dc703fb50367d8b6cb5d85",
+
 };
 
 // Initialize Firebase
